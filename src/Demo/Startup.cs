@@ -7,6 +7,9 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Routing;
 using Microsoft.Framework.DependencyInjection;
+using Microsoft.Data.Entity;
+using Microsoft.Framework.ConfigurationModel;
+using Demo.Models.DB;
 
 namespace Demo
 {
@@ -20,13 +23,19 @@ namespace Demo
         // Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            // Uncomment the following line to add Web API services which makes it easier to port Web API 2 controllers.
-            // You will also need to add the Microsoft.AspNet.Mvc.WebApiCompatShim package to the 'dependencies' section of project.json.
-            // services.AddWebApiConventions();
-        }
+			var config = new Configuration()
+				.AddJsonFile("config.json");
 
-        // Configure is called after ConfigureServices is called.
+			var connectionString = config["Data:ConnectionStrings:DefaultConnection"];
+
+			if (connectionString == "") { throw new KeyNotFoundException("Connection String not found in config.json"); }
+
+            services.AddMvc();
+			services.AddEntityFramework()
+				.AddSqlServer()
+				.AddDbContext<DatabaseContext>(x => x.UseSqlServer(connectionString));
+        }
+		
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // Configure the HTTP request pipeline.
@@ -36,6 +45,8 @@ namespace Demo
             app.UseMvc();
             // Add the following route for porting Web API 2 controllers.
             // routes.MapWebApiRoute("DefaultApi", "api/{controller}/{id?}");
+
+			app.UseStaticFiles
         }
     }
 }
