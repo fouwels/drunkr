@@ -20,24 +20,18 @@ namespace Demo
 		IConfiguration Config { get; set; }
 		public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv)
 		{
-			// Setup configuration sources.
-
 			var builder = new ConfigurationBuilder(appEnv.ApplicationBasePath)
 				.AddJsonFile("config.json")
 				.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
 
 			if (env.IsDevelopment())
 			{
-				// This reads the configuration keys from the secret store.
-				// For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
 				builder.AddUserSecrets();
 			}
 			builder.AddEnvironmentVariables();
 			Config = builder.Build();
 		}
-
-		// This method gets called by a runtime.
-		// Use this method to add services to the container
+		
 		public void ConfigureServices(IServiceCollection services)
         {
 			var connectionString = Config["Data:ConnectionStrings:DefaultConnection"];
