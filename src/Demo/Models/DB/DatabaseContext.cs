@@ -10,10 +10,6 @@ namespace Demo.Models.DB
     {
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			// Make Blog.Url required
-			modelBuilder.Entity<Blog>()
-				.Property(b => b.Url)
-				.Required();
 		}
 
 		public DbSet<Bottle> Bottles { get; set; }
