@@ -9,35 +9,43 @@ namespace Demo.Repositories
 {
 	public class SpiritRepository : IDatabaseRepository<Spirit>
 	{
-		public IEnumerable<Spirit> GetAll
+		private DatabaseContext _db = new DatabaseContext();
+		public Spirit Add(Spirit Item)
 		{
-			get
+			_db.Add(Item);
+			_db.SaveChanges();
+			return Item;
+		}
+
+		public int Delete(Guid ID)
+		{
+			var spirit = _db.Spirits.FirstOrDefault(x => x.Id == ID);
+			if (spirit == null)
 			{
-				throw new NotImplementedException();
+				return 0;
 			}
+			_db.Spirits.Remove(spirit);
+			var rowsChanged = _db.SaveChanges();
+
+			return rowsChanged;
 		}
 
-		public Spirit GetByID
+		public IEnumerable<Spirit> GetAll()
 		{
-			get
-			{
-				throw new NotImplementedException();
-			}
+			return _db.Spirits.OrderBy(x => x.Id).ToList();
 		}
 
-		public bool Add(Spirit Item)
+		public Spirit GetByID(Guid ID)
 		{
-			throw new NotImplementedException();
+			return _db.Spirits.Where(x => x.Id == ID).FirstOrDefault();
 		}
 
-		public bool Delete(Spirit Item)
+		public Spirit Update(Spirit Item)
 		{
-			throw new NotImplementedException();
-		}
-
-		public bool Update(Spirit Item)
-		{
-			throw new NotImplementedException();
+			var original = _db.Spirits.Where(x => x.Id == Item.Id).FirstOrDefault();
+			if (original == null){ return null; }
+			_db.Spirits.Update(original);
+			return original;
 		}
 	}
 }

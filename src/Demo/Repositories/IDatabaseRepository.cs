@@ -7,10 +7,10 @@ namespace Demo.Repositories
 {
     public interface IDatabaseRepository<T>
     {
-		IEnumerable<T> GetAll {	get; }
-		T GetByID {	get; }
-		bool Add(T Item);
-		bool Update(T Item);
-		bool Delete(T Item);
+		IEnumerable<T> GetAll();
+		T GetByID(Guid ID);
+		T Add(T Item);
+		T Update(T Item);
+		int Delete(Guid ID);
     }
 }

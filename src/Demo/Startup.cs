@@ -12,6 +12,8 @@ using Microsoft.Framework.Configuration;
 using Demo.Models.DB;
 using Microsoft.Framework.Runtime;
 using Microsoft.AspNet.Diagnostics;
+using Microsoft.Framework.Logging;
+using Demo.Repositories;
 
 namespace Demo
 {
@@ -31,24 +33,38 @@ namespace Demo
 			builder.AddEnvironmentVariables();
 			Config = builder.Build();
 		}
-		
+
 		public void ConfigureServices(IServiceCollection services)
-        {
+		{
 			var connectionString = Config["Data:ConnectionStrings:DefaultConnection"];
 			if (connectionString == "") { throw new KeyNotFoundException("Connection String not found in config.json"); }
 
-            services.AddMvc();
+
+			services.AddMvc();
+			services.AddLogging();
 			services.AddEntityFramework()
 				.AddSqlServer()
 				.AddDbContext<DatabaseContext>(x => x.UseSqlServer(connectionString));
-        }
+
+			services.AddScoped<BottleRepository>();
+			services.AddScoped<LiquidRepository>();
+			services.AddScoped<ManufacturerRepository>();
+			services.AddScoped<SpiritRepository>();
+		}
 		
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory LoggerFactory, ILogger<Startup> logger)
         {
-            app.UseStaticFiles();
+			LoggerFactory.AddConsole(LogLevel.Information);
+
+			app.Use(async (context, next) =>
+			{
+				var s = ("[Pipeline0] Request to:" + context.Request.Path);
+				logger.LogInformation(s);
+				await next();
+			});
+			app.UseStaticFiles();
 			app.UseErrorPage();
             app.UseMvc();
-			app.UseStaticFiles();
         }
     }
 }
