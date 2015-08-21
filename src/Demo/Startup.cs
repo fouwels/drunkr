@@ -37,11 +37,15 @@ namespace Demo
 		public void ConfigureServices(IServiceCollection services)
 		{
 			var connectionString = Config["Data:ConnectionStrings:DefaultConnection"];
-			if (connectionString == "") { throw new KeyNotFoundException("Connection String not found in config.json"); }
+			if (connectionString == null) { throw new KeyNotFoundException("Connection String not found in config.json"); }
 
+			services.AddLogging();
+			var lfactory = new LoggerFactory(); //can't take from DI yet :'(
+			var logger = lfactory.CreateLogger("ConfigureServices");
+			lfactory.AddConsole(LogLevel.Information); //<----
+			logger.LogInformation("Using connectionString:\n" + connectionString + "\n");
 
 			services.AddMvc();
-			services.AddLogging();
 			services.AddEntityFramework()
 				.AddSqlServer()
 				.AddDbContext<DatabaseContext>(x => x.UseSqlServer(connectionString));
