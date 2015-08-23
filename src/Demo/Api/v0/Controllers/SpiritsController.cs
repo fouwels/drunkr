@@ -10,7 +10,7 @@ using Demo.Repositories;
 
 namespace Demo.Api.v0.Controllers
 {
-    [Route("api/v0/[controller]")]
+    [Route("api/v0/[controller]/[action]")]
     public class SpiritsController : Controller
     {
 		[HttpGet]
@@ -18,5 +18,16 @@ namespace Demo.Api.v0.Controllers
 		{
 			return spiritRepository.GetAll();
 		}
-	}
+
+	    [HttpGet]
+	    public Spirit Add(SpiritRepository spiritRepository)
+	    {
+		    var spirit = new Spirit
+		    {
+			    Name = "yeee"
+		    };
+		    var x = spiritRepository.Add(spirit);
+		    return x;
+	    }
+    }
 }

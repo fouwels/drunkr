@@ -37,12 +37,12 @@ namespace Demo.Repositories
 
 		public Spirit GetByID(Guid ID)
 		{
-			return _db.Spirits.Where(x => x.Id == ID).FirstOrDefault();
+			return _db.Spirits.FirstOrDefault(x => x.Id == ID);
 		}
 
 		public Spirit Update(Spirit Item)
 		{
-			var original = _db.Spirits.Where(x => x.Id == Item.Id).FirstOrDefault();
+			var original = _db.Spirits.FirstOrDefault(x => x.Id == Item.Id);
 			if (original == null){ return null; }
 			_db.Spirits.Update(original);
 			return original;
