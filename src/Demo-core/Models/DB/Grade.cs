@@ -5,11 +5,7 @@ using System.Threading.Tasks;
 
 namespace Demo_core.Models.DB
 {
-    public class Spirit : Base
+    public class Grade
     {
-		public string Name
-		{
-			get; set;
-		}
     }
 }

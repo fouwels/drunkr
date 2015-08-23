@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace Demo_core.Models.DB
 {
-    public class Manufacturer : Base
+    public class Producer
     {
-		public string Name { get; set; }
-		public string DisplayName { get; set; }
-	}
+    }
 }
