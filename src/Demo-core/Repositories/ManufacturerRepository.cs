@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Demo.Models.DB;
+using Demo_core.Models.DB;
 
-namespace Demo.Repositories
+namespace Demo_core.Repositories
 {
-	public class LiquidRepository : IDatabaseRepository<Liquid>
+	public class ManufacturerRepository : IDatabaseRepository<Manufacturer>
 	{
-		public Liquid Add(Liquid Item)
+		public Manufacturer Add(Manufacturer Item)
 		{
 			throw new NotImplementedException();
 		}
@@ -18,17 +18,17 @@ namespace Demo.Repositories
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<Liquid> GetAll()
+		public IEnumerable<Manufacturer> GetAll()
 		{
 			throw new NotImplementedException();
 		}
 
-		public Liquid GetByID(Guid ID)
+		public Manufacturer GetByID(Guid ID)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Liquid Update(Liquid Item)
+		public Manufacturer Update(Manufacturer Item)
 		{
 			throw new NotImplementedException();
 		}

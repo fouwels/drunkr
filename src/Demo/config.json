@@ -1,7 +1,7 @@
 ﻿{
 	"Data": {
 		"ConnectionStrings": {
-			"DefaultConnection": "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=F:\\Workbench\\Demo-Api\\Demo\\src\\Demo\\App_Data\\DatabaseContext.mdf;Integrated Security=True;Connect Timeout=30"
+			"DefaultConnection": "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=F:\\Workbench\\Demo_api-Api\\Demo_api\\src\\Demo_api\\App_Data\\DatabaseContext.mdf;Integrated Security=True;Connect Timeout=30"
 		}
 	}
 }

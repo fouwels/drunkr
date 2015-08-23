@@ -1,0 +1,28 @@
+﻿{
+	"version": "1.0.0-*",
+	"description": "Demo-core Class Library",
+	"authors": [ "Kaelan" ],
+	"tags": [ "" ],
+	"projectUrl": "",
+	"licenseUrl": "",
+
+	"dependencies": {
+		"System.Collections": "4.0.10-beta6",
+		"System.Linq": "4.0.0-beta6",
+		"System.Threading": "4.0.10-beta6",
+		"System.Runtime": "4.0.10-beta6",
+		"Microsoft.CSharp": "4.0.0-beta6",
+		"Microsoft.Framework.Configuration.Json": "1.0.0-beta6",
+		"Microsoft.Framework.Configuration.UserSecrets": "1.0.0-beta6",
+		"EntityFramework.SqlServer": "7.0.0-beta6",
+		"EntityFramework.Commands": "7.0.0-beta6",
+		"Microsoft.AspNet.Diagnostics": "1.0.0-beta6",
+		"Microsoft.Framework.Logging": "1.0.0-beta6",
+		"Microsoft.Framework.Logging.Console": "1.0.0-beta6",
+	},
+
+	"frameworks": {
+		"dnx451": {},
+		"dnxcore50": {}
+	}
+}

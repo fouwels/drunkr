@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.Entity;
 
-namespace Demo.Models.DB
+namespace Demo_core.Models.DB
 {
     public class DatabaseContext : DbContext
     {

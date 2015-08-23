@@ -1,11 +1,11 @@
-﻿using Demo.Models.DB;
-using Demo.Repositories;
+﻿using Demo_core.Models.DB;
+using Demo_core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Demo.Repositories
+namespace Demo_core.Repositories
 {
 	public class SpiritRepository : IDatabaseRepository<Spirit>
 	{
