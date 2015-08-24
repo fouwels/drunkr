@@ -36,22 +36,18 @@ namespace Demo_api
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			var connectionString = Config["Data:ConnectionStrings:DefaultConnection"];
-			if (connectionString == null) { throw new KeyNotFoundException("Connection String not found in config.json"); }
+			//var connectionString = Config["Data:ConnectionStrings:DefaultConnection"];
+			//if (connectionString == null) { throw new KeyNotFoundException("Connection String not found in config.json"); }
 
 			services.AddLogging();
-			var lfactory = new LoggerFactory(); //can't take from DI yet :'(
-			var logger = lfactory.CreateLogger("ConfigureServices");
-			lfactory.AddConsole(LogLevel.Information); //<----
-			logger.LogInformation("Using connectionString:\n" + connectionString + "\n");
+			//var lfactory = new LoggerFactory(); //can't take from DI yet :'(
+			//var logger = lfactory.CreateLogger("ConfigureServices");
+			//lfactory.AddConsole(LogLevel.Information); //<----
+			//logger.LogInformation("Using connectionString:\n" + connectionString + "\n");
 
 			services.AddMvc();
 			Demo_core.Startup.Configure();
-
-			//services.AddEntityFramework()
-			//	.AddSqlServer()
-			//	.AddDbContext<DatabaseContext>(x => x.UseSqlServer(connectionString));
-
+			
 			//services.AddScoped<BottleRepository>();
 			//services.AddScoped<LiquidRepository>();
 			//services.AddScoped<ManufacturerRepository>();
