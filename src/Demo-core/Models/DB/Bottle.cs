@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace Demo_core.Models.DB
 {
-    public class BottleSize
+    public class Bottle : Base
     {
-    }
+		public float SizeInCentiLiters { get; set; }
+
+	}
 }

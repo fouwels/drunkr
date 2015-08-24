@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace Demo_core.Models.DB
 {
-    public class CountryOfOrigin
+    public class CountryOfOrigin : Base
     {
-    }
+		public string Name { get; set; }
+	}
 }

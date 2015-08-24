@@ -1,0 +1,7 @@
+﻿{
+	"Data":{
+		"ConnectionStrings": {
+			"DatabaseContext": "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=F:\\Workbench\\Demo-Api\\Demo\\src\\Demo-core\\App_Data\\DatabaseContext.mdf;Integrated Security=True;Connect Timeout=30"
+		}
+	}
+}

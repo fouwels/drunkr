@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace Demo_core.Models.DB
 {
-    public class Abv : Base
+    public class Image : Base
     {
-		public float Percentage { get; set; }
+		public byte[] ByteArray { get; set; }
+		public string FileExtension { get; set; }
 	}
 }

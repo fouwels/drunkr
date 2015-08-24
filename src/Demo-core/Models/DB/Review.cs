@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Demo_core.Models.DB
 {
-    public class Review
+    public class Review : Base
     {
     }
 }

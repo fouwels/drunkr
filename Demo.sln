@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Demo-api", "src\Demo\Demo-api.xproj", "{21DEFB1F-B417-4060-941C-63ACE42DE6F8}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Demo-api", "src\Demo-api\Demo-api.xproj", "{21DEFB1F-B417-4060-941C-63ACE42DE6F8}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Demo-core", "src\Demo-core\Demo-core.xproj", "{6912ECFD-C8C0-4900-A603-C96A46945EB9}"
 EndProject

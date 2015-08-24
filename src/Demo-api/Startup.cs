@@ -7,6 +7,13 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Routing;
 using Microsoft.Framework.DependencyInjection;
+using Microsoft.Data.Entity;
+using Microsoft.Framework.Configuration;
+using Demo_core.Models.DB;
+using Microsoft.Framework.Runtime;
+using Microsoft.AspNet.Diagnostics;
+using Microsoft.Framework.Logging;
+using Demo_core.Repositories;
 
 namespace Demo_api
 {
@@ -39,18 +46,20 @@ namespace Demo_api
 			logger.LogInformation("Using connectionString:\n" + connectionString + "\n");
 
 			services.AddMvc();
-			services.AddEntityFramework()
-				.AddSqlServer()
-				.AddDbContext<DatabaseContext>(x => x.UseSqlServer(connectionString));
+			Demo_core.Startup.Configure();
 
-			services.AddScoped<BottleRepository>();
-			services.AddScoped<LiquidRepository>();
-			services.AddScoped<ManufacturerRepository>();
-			services.AddScoped<SpiritRepository>();
+			//services.AddEntityFramework()
+			//	.AddSqlServer()
+			//	.AddDbContext<DatabaseContext>(x => x.UseSqlServer(connectionString));
+
+			//services.AddScoped<BottleRepository>();
+			//services.AddScoped<LiquidRepository>();
+			//services.AddScoped<ManufacturerRepository>();
+			//services.AddScoped<SpiritRepository>();
 		}
-
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory LoggerFactory, ILogger<Startup> logger)
-		{
+		
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory LoggerFactory, ILogger<Startup> logger)
+        {
 			LoggerFactory.AddConsole(LogLevel.Information);
 
 			app.Use(async (context, next) =>
@@ -61,8 +70,7 @@ namespace Demo_api
 			});
 			app.UseStaticFiles();
 			app.UseErrorPage();
-			app.UseMvc();
-		}
-	}
-}
+            app.UseMvc();
+        }
+    }
 }
