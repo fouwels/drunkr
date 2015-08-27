@@ -14,6 +14,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Demo-api", "src\Demo-api\De
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Demo-core", "src\Demo-core\Demo-core.xproj", "{6912ECFD-C8C0-4900-A603-C96A46945EB9}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Scrapers", "src\Scrapers\Scrapers.xproj", "{13DD6EBD-6A94-46AC-B7FA-472663A09AF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{6912ECFD-C8C0-4900-A603-C96A46945EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6912ECFD-C8C0-4900-A603-C96A46945EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6912ECFD-C8C0-4900-A603-C96A46945EB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13DD6EBD-6A94-46AC-B7FA-472663A09AF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13DD6EBD-6A94-46AC-B7FA-472663A09AF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13DD6EBD-6A94-46AC-B7FA-472663A09AF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13DD6EBD-6A94-46AC-B7FA-472663A09AF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -35,5 +41,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{21DEFB1F-B417-4060-941C-63ACE42DE6F8} = {B504E416-3A22-4254-87AB-3CB17C8E8050}
 		{6912ECFD-C8C0-4900-A603-C96A46945EB9} = {B504E416-3A22-4254-87AB-3CB17C8E8050}
+		{13DD6EBD-6A94-46AC-B7FA-472663A09AF7} = {B504E416-3A22-4254-87AB-3CB17C8E8050}
 	EndGlobalSection
 EndGlobal
