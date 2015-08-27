@@ -1,13 +1,16 @@
 ﻿{
-  "version": "1.0.0-*",
-  "description": "Scrapers Console Application",
-  "authors": [ "Kaelan" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
+	"version": "1.0.0-*",
+	"description": "Scrapers Console Application",
+	"authors": [ "Kaelan" ],
+	"tags": [ "" ],
+	"projectUrl": "",
+	"licenseUrl": "",
 
-  "dependencies": {
-  },
+	"dependencies": {
+		"Demo-core": "",
+		"System.Net.Http": "4.0.0-*",
+		"HtmlAgilityPack": "1.4.9"
+	},
 
   "commands": {
     "Scrapers": "Scrapers"
