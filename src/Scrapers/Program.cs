@@ -10,8 +10,8 @@ namespace Demo_scrapers
 {
     public class Program
     {
-		const string RootUrl = @"http://www.thedrinkshop.com/products/productlist.php?catid=";
-        public void Main(string[] args)
+		const string RootUrl = @"http://www.thedrinkshop.com/products/productlist.php?prodid=";
+        public async void Main(string[] args)
         {
 			const int startId = 244;
 			const int endId = 244;
@@ -20,35 +20,53 @@ namespace Demo_scrapers
 
 			var Tasks = new Task[n];
 
-			for (var index = startId; index <= endId; index++)
-			{
-				Tasks[index - startId] = Scrape(index);
-			}
+			await Scrape(244);
 
-			Task.WaitAll(Tasks);
+
+			//for (var index = startId; index <= endId; index++)
+			//{
+			//Tasks[index - startId] = Scrape(index);
+			//}
+
+			//Task.WaitAll(Tasks);
 			Console.ReadLine();
         }
 		public async Task Scrape(int Id)
 		{
-			//Debug.WriteLine("scraping: " + Id.ToString());
-
-			var Page = "";
-
-			using (var ht = new HttpClient())
+			try
 			{
-				var r = (await ht.GetAsync(RootUrl + Id.ToString()));
-				Debug.Write(r.StatusCode + " on page: " + Id.ToString());
-				if (r.StatusCode != System.Net.HttpStatusCode.OK) { Console.WriteLine(" <!>"); return; }
-				Console.WriteLine();
+				Debug.WriteLine("scraping: " + Id.ToString());
 
-                Page = await r.Content.ReadAsStringAsync();
+				var Page = "";
+
+				using (var handler = new HttpClientHandler())
+				{
+					handler.CookieContainer = new System.Net.CookieContainer();
+					handler.CookieContainer.Add(new System.Net.Cookie("age_gate", "legal", "/", "www.thedrinkshop.com"));
+
+					using (var ht = new HttpClient(handler))
+					{
+						var r = await ht.GetAsync(RootUrl + Id.ToString());
+						Debug.Write(r.StatusCode + " on page: " + Id.ToString());
+						if (r.StatusCode != System.Net.HttpStatusCode.OK) { Debug.WriteLine(" <!>"); return; }
+						if (r.RequestMessage.RequestUri.AbsoluteUri.ToLower().Contains("http://www.thedrinkshop.com/notfound.php")) { Debug.WriteLine(" <!>"); return; };
+						Debug.WriteLine("");
+
+						Page = await r.Content.ReadAsStringAsync();
+					}
+				}
+
+				var packdoc = new HtmlAgilityPack.HtmlDocument();
+				packdoc.LoadHtml(Page);
+				var doc = packdoc.DocumentNode.Descendants();
+				var span = doc.Where(a => a.Name == "span");
+				var t = span.Where(x => x.Attributes.Any(q => q.Value.ToLower() != "divider"));
 			}
+			catch (Exception ex)
+			{
 
-			var packdoc = new HtmlAgilityPack.HtmlDocument();
-			packdoc.Load(Page);
-
-
-
-		}
+				throw; //breakoint and catch while in async
+			}
+        }
     }
 }
