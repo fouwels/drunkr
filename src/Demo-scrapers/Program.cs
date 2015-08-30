@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Policy;
+using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 
 namespace Demo_scrapers
@@ -72,10 +73,21 @@ namespace Demo_scrapers
 
 			var packdoc = new HtmlAgilityPack.HtmlDocument();
 			packdoc.LoadHtml(Page);
-			//var doc = packdoc.DocumentNode.Descendants();
-			var desc = packdoc.DocumentNode.SelectNodes("//*[@id=\"middle-column\"]/div/div[1]/div[1]/div[3]/div[1]/div/span[2]");
-			//var span = doc.Where(a => a.Name == "span");
-			//var t = span.Where(x => x.Attributes.Any(q => q.Value.ToLower() != "divider"));
+			var doc = packdoc.DocumentNode.Descendants();
+
+			var product = new Demo_core.Models.DB.Product();
+
+			var description = doc
+				.Where(a => a.Name == "span")
+				.First(b => b.Attributes.Any(x => x.OriginalName == "itemprop" && x.Value == "description"))
+				.InnerHtml;
+			description = Regex.Replace(description, @"\<.+\>", string.Empty);
+
+			Debug.WriteLine("[" + Id + "] Description: " + description);
+
+			product.Description = description;
+
+
 		}
     }
 }
