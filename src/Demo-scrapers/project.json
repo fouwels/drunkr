@@ -7,13 +7,13 @@
 	"licenseUrl": "",
 
 	"dependencies": {
-		"Demo-core": "",
 		"System.Net.Http": "4.0.0-*",
-		"HtmlAgilityPack": "1.4.9"
+		"HtmlAgilityPack": "1.4.9",
+		"Demo-api": ""
 	},
 
   "commands": {
-    "Scrapers": "Scrapers"
+    "Demo-scrapers": "Demo-scrapers"
   },
 
   "frameworks": {

@@ -14,7 +14,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Demo-api", "src\Demo-api\De
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Demo-core", "src\Demo-core\Demo-core.xproj", "{6912ECFD-C8C0-4900-A603-C96A46945EB9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Demo-scrapers", "src\Scrapers\Demo-scrapers.xproj", "{13DD6EBD-6A94-46AC-B7FA-472663A09AF7}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Demo-scrapers", "src\Demo-scrapers\Demo-scrapers.xproj", "{13DD6EBD-6A94-46AC-B7FA-472663A09AF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
