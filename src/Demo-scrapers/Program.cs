@@ -82,12 +82,15 @@ namespace Demo_scrapers
 				.First(b => b.Attributes.Any(x => x.OriginalName == "itemprop" && x.Value == "description"))
 				.InnerHtml;
 			description = Regex.Replace(description, @"\<.+\>", string.Empty);
-
 			Debug.WriteLine("[" + Id + "] Description: " + description);
-
 			product.Description = description;
 
-
+			var name = doc
+				.Where(a => a.Name == "img")
+				.First(x => x.Attributes.Any(b => b.OriginalName == "itemprop" && b.Value == "image") && x.Attributes.Any(z => z.OriginalName == "class" && z.Value == "mainImage"))
+				.Attributes.First(y => y.OriginalName == "alt").Value;
+			Debug.WriteLine("[" + Id + "] Name: " + name);
+			product.Name = name;
 		}
     }
 }
