@@ -11,22 +11,9 @@ namespace Demo_core.Models.DB
 {
     public class DatabaseContext : DbContext
     {
-		public DatabaseContext()
-		{
-			//var x = Path.GetFullPath("./");
-
-			//var builder = new ConfigurationBuilder(".")
-			//	.AddJsonFile("config.json");
-
-			
-
-			//Configuration = builder.Build();
-			//var watch = Configuration["Data:ConnectionStrings:DefaultConnection"];
-		}
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
-			//builder.Entity<Abv>().Key(e => e.Id);
-			base.OnModelCreating(builder);
+			//builder.Entity<Product>().
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

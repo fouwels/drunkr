@@ -5,7 +5,7 @@ using Microsoft.Data.Entity.Migrations.Operations;
 
 namespace DemocoreMigrations
 {
-    public partial class initial : Migration
+    public partial class mig5 : Migration
     {
         public override void Up(MigrationBuilder migration)
         {
@@ -108,9 +108,9 @@ namespace DemocoreMigrations
                     CountryOfOriginId = table.Column(type: "uniqueidentifier", nullable: true),
                     Description = table.Column(type: "nvarchar(max)", nullable: true),
                     GradeId = table.Column(type: "uniqueidentifier", nullable: true),
-                    Name = table.Column(type: "nvarchar(max)", nullable: true),
-                    ProducerId = table.Column(type: "uniqueidentifier", nullable: true),
-                    ThumbnailId = table.Column(type: "uniqueidentifier", nullable: true)
+                    ImageId = table.Column(type: "uniqueidentifier", nullable: true),
+                    Name = table.Column(type: "nvarchar(max)", nullable: false),
+                    ProducerId = table.Column(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -141,14 +141,14 @@ namespace DemocoreMigrations
                         referencedTable: "Grade",
                         referencedColumn: "Id");
                     table.ForeignKey(
+                        name: "FK_Product_Image_ImageId",
+                        columns: x => x.ImageId,
+                        referencedTable: "Image",
+                        referencedColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Product_Producer_ProducerId",
                         columns: x => x.ProducerId,
                         referencedTable: "Producer",
-                        referencedColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Product_Image_ThumbnailId",
-                        columns: x => x.ThumbnailId,
-                        referencedTable: "Image",
                         referencedColumn: "Id");
                 });
             migration.CreateTable(
@@ -156,7 +156,9 @@ namespace DemocoreMigrations
                 columns: table => new
                 {
                     Id = table.Column(type: "uniqueidentifier", nullable: false),
+                    Price = table.Column(type: "real", nullable: false),
                     ProductId = table.Column(type: "uniqueidentifier", nullable: true),
+                    RetailName = table.Column(type: "nvarchar(max)", nullable: true),
                     SizeInCentiLiters = table.Column(type: "real", nullable: false)
                 },
                 constraints: table =>
@@ -197,8 +199,8 @@ namespace DemocoreMigrations
             migration.DropTable("Category");
             migration.DropTable("CountryOfOrigin");
             migration.DropTable("Grade");
-            migration.DropTable("Producer");
             migration.DropTable("Image");
+            migration.DropTable("Producer");
         }
     }
 }

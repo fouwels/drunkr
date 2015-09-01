@@ -122,7 +122,18 @@ namespace Demo_scrapers
 			product.Image.FileExtension = imageURL.Split('.').Last();
 
 			var prodrepo = new Demo_core.Repositories.ProductRepository();
-			prodrepo.Add(product);
+
+			var existing = prodrepo.GetBy(x => x.Name.ToLower() == product.Name.ToLower()).FirstOrDefault();
+
+			if (existing == null)
+			{
+				prodrepo.Add(product);
+			}
+			else
+			{
+				prodrepo.Update(existing);
+			}
+			
 
 			var test = prodrepo.GetAll();
 		}

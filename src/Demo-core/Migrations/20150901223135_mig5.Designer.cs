@@ -7,11 +7,11 @@ using Demo_core.Models.DB;
 namespace DemocoreMigrations
 {
     [ContextType(typeof(DatabaseContext))]
-    partial class mig2
+    partial class mig5
     {
         public override string Id
         {
-            get { return "20150901151632_mig2"; }
+            get { return "20150901223135_mig5"; }
         }
 
         public override string ProductVersion
@@ -140,7 +140,8 @@ namespace DemocoreMigrations
 
                     b.Property<Guid?>("ImageId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .Required();
 
                     b.Property<Guid?>("ProducerId");
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,6 +9,7 @@ namespace Demo_core.Models.DB
 {
     public class Product : Base
     {
+		[Required]
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public virtual Image Image { get; set; }

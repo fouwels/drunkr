@@ -130,7 +130,8 @@ namespace DemocoreMigrations
 
                     b.Property<Guid?>("ImageId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .Required();
 
                     b.Property<Guid?>("ProducerId");
 
