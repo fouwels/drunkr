@@ -9,7 +9,7 @@ namespace Demo_core.Models.DB
     {
 		public string Name { get; set; }
 		public string Description { get; set; }
-		public virtual Image Thumbnail { get; set; }
+		public virtual Image Image { get; set; }
 		public virtual Producer Producer { get; set; }
 		public virtual Grade Grade { get; set; }
 		public virtual CountryOfOrigin CountryOfOrigin { get; set; }

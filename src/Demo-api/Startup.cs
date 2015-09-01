@@ -46,7 +46,6 @@ namespace Demo_api
 			//logger.LogInformation("Using connectionString:\n" + connectionString + "\n");
 
 			services.AddMvc();
-			Demo_core.Startup.Configure();
 			
 			//services.AddScoped<BottleRepository>();
 			//services.AddScoped<LiquidRepository>();

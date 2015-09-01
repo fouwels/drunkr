@@ -11,7 +11,7 @@ namespace Demo_core.Repositories
 	{
 		private DatabaseContext DataContext;
 
-		public GenericRepository()
+		protected GenericRepository()
 		{
 			DataContext = new DatabaseContext();
 		}

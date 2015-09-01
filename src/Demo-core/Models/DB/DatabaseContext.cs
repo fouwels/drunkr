@@ -1,31 +1,39 @@
 ﻿using Microsoft.Data.Entity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Framework.Configuration;
+using Microsoft.Framework.Runtime;
+
 namespace Demo_core.Models.DB
 {
     public class DatabaseContext : DbContext
     {
 		public DatabaseContext()
 		{
-			var builder = new ConfigurationBuilder(@".\")
-				.AddJsonFile("Config.json");
+			//var x = Path.GetFullPath("./");
 
-			Configuration = builder.Build();
-			var watch = Configuration["Data:ConnectionStrings:DefaultConnection"];
-        }
+			//var builder = new ConfigurationBuilder(".")
+			//	.AddJsonFile("config.json");
+
+			
+
+			//Configuration = builder.Build();
+			//var watch = Configuration["Data:ConnectionStrings:DefaultConnection"];
+		}
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
-			builder.Entity<Abv>().Key(e => e.Id);
+			//builder.Entity<Abv>().Key(e => e.Id);
 			base.OnModelCreating(builder);
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			var connString = Configuration["Data:ConnectionStrings:DatabaseContext"];
-			optionsBuilder.UseSqlServer(connString);
+			var connString =
+				"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=F:\\Workbench\\Demo-Api\\Demo\\src\\Demo-core\\App_Data\\DatabaseContext.mdf;Integrated Security=True;Connect Timeout=30";
+            optionsBuilder.UseSqlServer(connString);
 		}
 
 		private IConfiguration Configuration;
