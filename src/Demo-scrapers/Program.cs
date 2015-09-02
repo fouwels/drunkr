@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
 using Demo_core.Models.DB;
+using Demo_core.Repositories;
 using HtmlAgilityPack;
 using Microsoft.AspNet.DataProtection.Repositories;
 
@@ -16,35 +17,69 @@ namespace Demo_scrapers
 {
 	public class Program
 	{
-		private const bool Verbose = false;
 		const string RootUrl = "http://www.thedrinkshop.com/products/nlpdetail.php?prodid=";
-		public async Task Main(string[] args)
+		private ProductRepository _prodrepo;
+		private int failedScrapes = 0;
+		private int failedNetwork = 0;
+        public async Task Main(string[] args)
 		{
-			const int startId = 11128;
-			const int endId = 11128;
+			_prodrepo = new Demo_core.Repositories.ProductRepository();
+	        var x = _prodrepo.GetAll();
 
+			const int startId = 100;
+			const int endId = 10000;
+			const int batchSize = 10;
 			var n = endId - startId + 1;
 
-			var Tasks = new Task[n];
-			for (var index = startId; index <= endId; index++)
+			var batches = new List<Tuple<int, int>>();
+
+			for (int i = startId; i < endId; i += batchSize)
 			{
-				Debug.WriteLine("Adding ID: " + (index).ToString() + " to que");
-				Tasks[index - startId] = Scrape(index);
+				var end = (i + batchSize - 1) > endId ? endId : (i + batchSize - 1);
+                batches.Add(new Tuple<int, int>(i, end));
+				Debug.WriteLine("batch: " + i +" : " + (i + batchSize -1));
 			}
 
-			Task.WaitAll(Tasks);
+			foreach (var batch in batches)
+			{
+				var Tasks = new Task[batchSize];
+				for (var index = batch.Item1; index <= batch.Item2; index++)
+				{
+					//Debug.WriteLine("Adding ID: " + (index).ToString() + " to que");
+					Tasks[index - batch.Item1] = Scrape(index);
+				}
+				await Task.WhenAll(Tasks);
+				Debug.WriteLine("===============\ncompleted batch " + batch.Item1 + " : " + batch.Item2 + "\n===============");
+				Debug.WriteLine("Failed:\t\t\t" + failedScrapes + "\nNetworkErrors:\t" + failedNetwork + "\n");
+			}
+			Debug.WriteLine("===============\nall batches completed\n===============");
+
+
+
 			Console.ReadLine();
 		}
 
 		private async Task Scrape(int Id)
 		{
-			Debug.WriteLine("scraping: " + Id);
+			//Debug.WriteLine("scraping: " + Id);
 
-			var r = await GetPageEntity(id: Id.ToString());
+			HttpResponseMessage r = new HttpResponseMessage();
+			try
+			{
+				r = await GetPageEntity(id: Id.ToString());
+			}
+			catch
+			{
+				failedScrapes += 1;
+				failedNetwork += 1;
+				//Debug.WriteLine("[" + Id + "] FAIL: -> HTTP request failed internally?");
+				return;
+			}
+			
 			if (r.StatusCode != System.Net.HttpStatusCode.OK) { Debug.WriteLine(" <!> != 200"); }
 			if (r.RequestMessage.RequestUri.AbsoluteUri.ToLower().Contains("http://www.thedrinkshop.com/notfound.php")) { Debug.WriteLine(" <!> Not Found"); return; };
 			//if(Page.Contains("Please confirm you are above the legal drinking age in your country")) { Debug.WriteLine(" <!> Age gate"); return; }
-			Debug.WriteLine(""); //ew
+			//Debug.WriteLine(""); //ew
 			var Page = await r.Content.ReadAsStringAsync();
 
 
@@ -54,16 +89,41 @@ namespace Demo_scrapers
 
 			var product = new Demo_core.Models.DB.Product();
 
-			product.Name = doc
+			var tempProductName = doc
 				.Where(a => a.Name == "img")
 				.FirstOrDefault(x => x.Attributes.Any(b => b.OriginalName == "itemprop" && b.Value == "image") && x.Attributes.Any(z => z.OriginalName == "class" && z.Value == "mainImage"))
-				.Attributes.FirstOrDefault(y => y.OriginalName == "alt").Value;
-			Debug.WriteLine("[" + Id + "] Name: " + product?.Name);
+				?.Attributes.FirstOrDefault(y => y.OriginalName == "alt");
 
-			product.Description = Regex.Replace(doc
+			if (tempProductName == null)
+			{
+				failedScrapes += 1;
+				//Debug.WriteLine("[" + Id + "] FAIL: -> no name node");
+				return;
+			}
+			product.Name = tempProductName.Value;
+
+
+			//Debug.WriteLine("[" + Id + "] Name: " + product?.Name);
+
+			if (string.IsNullOrEmpty(product.Name))
+			{
+				failedScrapes += 1;
+				//Debug.WriteLine("[" + Id + "] FAIL: -> no name");
+				return;
+			}
+
+			var tempDescription = doc
 				.Where(a => a.Name == "span")
-				.FirstOrDefault(b => b.Attributes.Any(x => x.OriginalName == "itemprop" && x.Value == "description"))
-				.InnerHtml, @"\<.+\>", string.Empty);
+				.FirstOrDefault(b => b.Attributes.Any(x => x.OriginalName == "itemprop" && x.Value == "description"));
+
+			if (tempDescription == null)
+			{
+				failedScrapes += 1;
+				//Debug.WriteLine("[" + Id + "] FAIL: -> no description");
+				return;
+			}
+				
+			product.Description = Regex.Replace(tempDescription.InnerHtml, @"\<.+\>", string.Empty);
 			//Debug.WriteLine("[" + Id + "] Description: " + product.Description);
 
 			//<--
@@ -75,41 +135,57 @@ namespace Demo_scrapers
 				.Where(y => !Regex.IsMatch(y, @"^[, ]*$") )
 				.Select(p => p.Trim()).ToList();
 
-			product.Abv = new Abv
-			{
-				Percentage =  float.Parse(Regex.Replace(spans[1], @"\D", string.Empty))
-			};
+			//product.Abv = new Abv
+			//{
+			//	Percentage =  float.Parse(Regex.Replace(spans[1], @"\D", string.Empty))
+			//};
 
-			product.Producer = new Producer
-			{
-				Name = spans[2]
-			};
+			//product.Producer = new Producer
+			//{
+			//	Name = spans[2]
+			//};
 
-			product.CountryOfOrigin = new CountryOfOrigin
-			{
-				Name = spans[3]
-			};
-			product.Category = new Category
-			{
-				Name = spans[4]
-			};
-			product.Brand = new Brand
-			{
-				Name = spans[2]
-			};
+			//product.CountryOfOrigin = new CountryOfOrigin
+			//{
+			//	Name = spans[3]
+			//};
+			//product.Category = new Category
+			//{
+			//	Name = spans[4]
+			//};
+			//product.Brand = new Brand
+			//{
+			//	Name = spans[2]
+			//};
 			var rg = new Regex(@"<[^>]*>");
 
-			var bottleProps = doc
+			var bottlePropIni = doc
 				.Where(x => x.Name == "table")
-				.FirstOrDefault(b => b.Attributes["class"].Value == "priceTable")
-				.ChildNodes.Where(y => y.Name == "tr").ToList()[1]
+				.FirstOrDefault(b => b.Attributes.Any(t => t.OriginalName == "class" && t.Value == "priceTable"));
+
+			if (bottlePropIni == null || bottlePropIni.ChildNodes.Count <=2 )
+			{
+				failedScrapes += 1;
+				//Debug.WriteLine("[" + Id + "] FAIL: -> no bottles");
+				return;
+			}
+
+			var bottleProps = bottlePropIni.ChildNodes.Where(y => y.Name == "tr").ToList()[1]
 				.ChildNodes.Select(u => u.InnerHtml).ToArray().Where((val, x) => (new List<int> {0, 2, 4}).Contains(x)).ToList()
 				.Select(i => rg.Replace(i, "")).ToList();
+
+			var tempCentiliters = new float();
+			if (!float.TryParse(Regex.Match(bottleProps[0], @"^\d*").Value, out tempCentiliters))
+			{
+				failedScrapes += 1;
+				//Debug.WriteLine("[" + Id + "] FAIL: -> no bottle centiliters");
+				return;
+			}
 
 			product.Bottles = new List<Bottle>();
 			product.Bottles.Add(new Bottle
 			{
-				SizeInCentiLiters = float.Parse(Regex.Match(bottleProps[0], @"^\d*").Value),
+				SizeInCentiLiters = tempCentiliters,
 				RetailName = bottleProps[0],
 				Price = float.Parse(Regex.Match(bottleProps[2], @"\d*$").Value)
 			});
@@ -121,21 +197,21 @@ namespace Demo_scrapers
 			product.Image.ByteArray = await (await GetPageEntity(asset: imageURL)).Content.ReadAsByteArrayAsync();
 			product.Image.FileExtension = imageURL.Split('.').Last();
 
-			var prodrepo = new Demo_core.Repositories.ProductRepository();
-
-			var existing = prodrepo.GetBy(x => x.Name.ToLower() == product.Name.ToLower()).FirstOrDefault();
+			var existing = _prodrepo.GetBy(x => x.Name.ToLower() == product.Name.ToLower()).FirstOrDefault();
 
 			if (existing == null)
 			{
-				prodrepo.Add(product);
+				//Debug.WriteLine("[" + Id + "] New - Adding to datastore");
+				_prodrepo.Add(product);
 			}
 			else
 			{
-				prodrepo.Update(existing);
+				//Debug.WriteLine("[" + Id + "] Existing - Updating in datastore");
+				_prodrepo.Update(existing);
 			}
-			
 
-			var test = prodrepo.GetAll();
+
+			//var test = prodrepo.GetAll();
 		}
 		private async Task<HttpResponseMessage> GetPageEntity(string id = "", string asset = "") //hacky i kno
 		{
@@ -169,8 +245,31 @@ namespace Demo_scrapers
 				{
 					ht.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
 
-					var r = await ht.GetAsync(url);
-					Debug.Write("HttpCode: " + r.StatusCode + " on page: " + id.ToString());
+					HttpResponseMessage r = new HttpResponseMessage();
+
+					var retryCounter = 0;
+
+					Exception exHolder = new Exception();
+
+					while (r.Content == null && retryCounter < 10)
+					{
+						try
+						{
+							r = await ht.GetAsync(url);
+						}
+						catch(Exception ex)
+						{
+							exHolder = ex;
+							retryCounter += 1;
+							await Task.Delay(1000);
+						}
+					}
+
+					if (r.Content == null)
+					{
+						throw exHolder;
+					}
+					//Debug.Write("HttpCode: " + r.StatusCode + " on page: " + id.ToString());
 					return r;
 				}
 			}
