@@ -26,8 +26,8 @@ namespace Demo_scrapers
 			_prodrepo = new Demo_core.Repositories.ProductRepository();
 	        var x = _prodrepo.GetAll();
 
-			const int startId = 100;
-			const int endId = 10000;
+			const int startId = 300;
+			const int endId = 400;
 			const int batchSize = 10;
 			var n = endId - startId + 1;
 
@@ -45,12 +45,14 @@ namespace Demo_scrapers
 				var Tasks = new Task[batchSize];
 				for (var index = batch.Item1; index <= batch.Item2; index++)
 				{
+					Debug.WriteLine("scraping: " + index);
+					await Scrape(index); //can async later
 					//Debug.WriteLine("Adding ID: " + (index).ToString() + " to que");
-					Tasks[index - batch.Item1] = Scrape(index);
+					//Tasks[index - batch.Item1] = Scrape(index);
 				}
-				await Task.WhenAll(Tasks);
-				Debug.WriteLine("===============\ncompleted batch " + batch.Item1 + " : " + batch.Item2 + "\n===============");
-				Debug.WriteLine("Failed:\t\t\t" + failedScrapes + "\nNetworkErrors:\t" + failedNetwork + "\n");
+				//await Task.WhenAll(Tasks);
+				//Debug.WriteLine("===============\ncompleted batch " + batch.Item1 + " : " + batch.Item2 + "\n===============");
+				//Debug.WriteLine("Failed:\t\t\t" + failedScrapes + "\nNetworkErrors:\t" + failedNetwork + "\n");
 			}
 			Debug.WriteLine("===============\nall batches completed\n===============");
 
@@ -201,12 +203,12 @@ namespace Demo_scrapers
 
 			if (existing == null)
 			{
-				//Debug.WriteLine("[" + Id + "] New - Adding to datastore");
+				Debug.WriteLine("[" + Id + "] New - Adding to datastore");
 				_prodrepo.Add(product);
 			}
 			else
 			{
-				//Debug.WriteLine("[" + Id + "] Existing - Updating in datastore");
+				Debug.WriteLine("[" + Id + "] Existing - Updating in datastore");
 				_prodrepo.Update(existing);
 			}
 

@@ -14,9 +14,9 @@ namespace Demo_api.Api.v0.Controllers
 	public class ProductsController : Controller
 	{
 		[HttpGet]
-		public IEnumerable<Product> Get(ProductRepository spiritRepository)
+		public IEnumerable<Product> Get(ProductRepository spiritRepository, string name)
 		{
-			return spiritRepository.GetBy(x => x.Name == "yolo");
+			return spiritRepository.GetBy(x => x.Name == name);
 		}
 
 		[HttpGet]
