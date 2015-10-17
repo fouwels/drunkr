@@ -18,9 +18,21 @@ namespace Demo_core.Models.DB
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			var connString =
-				"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=F:\\Workbench\\Demo-Api\\Demo\\src\\Demo-core\\App_Data\\DatabaseContext.mdf;Integrated Security=True;Connect Timeout=30";
-            optionsBuilder.UseSqlServer(connString);
+			//var connString =
+			//	"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=F:\\Workbench\\Demo-Api\\Demo\\src\\Demo-core\\App_Data\\DatabaseContext.mdf;Integrated Security=True;Connect Timeout=30";
+      optionsBuilder.UseSqlServer(connString);
+
+      var connString = "
+      Data Source=tcp:j5is8c9imd.database.windows.net,1433;
+      Database=staging;
+      User ID=combodb@j5is8c9imd;
+      Password=6drMQg3jgP6ywt55efdnekmk;
+      Trusted_Connection=False;
+      Encrypt=True;
+      Connection Timeout=30;"
+
+      //commiting password ay, server IS firewalled so yolo
+
 		}
 
 		private IConfiguration Configuration;
