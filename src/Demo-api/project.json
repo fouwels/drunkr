@@ -3,23 +3,23 @@
 	"version": "1.0.0-*",
 	"userSecretsId" :  "nahm8",
   "dependencies": {
-    "Microsoft.AspNet.Mvc": "6.0.0-beta6",
-    "Microsoft.AspNet.Server.IIS": "1.0.0-beta6",
-    "Microsoft.AspNet.Server.WebListener": "1.0.0-beta6",
-    "Microsoft.AspNet.StaticFiles": "1.0.0-beta6",
-	"Microsoft.Framework.Configuration.Json": "1.0.0-beta6",
-    "Microsoft.Framework.Configuration.UserSecrets": "1.0.0-beta6",
-    "EntityFramework.SqlServer": "7.0.0-beta6",
-    "EntityFramework.Commands": "7.0.0-beta6",
-    "Microsoft.AspNet.Diagnostics": "1.0.0-beta6",
-	"Microsoft.Framework.Logging": "1.0.0-beta6",
-	"Microsoft.Framework.Logging.Console": "1.0.0-beta6",
+    "Microsoft.AspNet.Mvc": "6.0.0-rc1-update1",
+    "Microsoft.AspNet.Server.IIS": "1.0.0-rc1-update1",
+    "Microsoft.AspNet.Server.WebListener": "1.0.0-rc1-update1",
+    "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-update1",
+	"Microsoft.Framework.Configuration.Json": "1.0.0",
+    "Microsoft.Framework.Configuration.UserSecrets": "1.0.0-rc1-update1",
+    "EntityFramework.SqlServer": "1.0.0-rc1-update1",
+    "EntityFramework.Commands": "1.0.0-rc1-update1",
+    "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-update1",
+	"Microsoft.Framework.Logging": "1.0.0-rc1-update1",
+	"Microsoft.Framework.Logging.Console": "1.0.0-rc1-update1",
 	"Demo-core": ""
   },
   "commands": {
     "web": "Microsoft.AspNet.Hosting --config hosting.ini",
-	"ef": "EntityFramework.Commands",
-	"gen": "Microsoft.Framework.CodeGeneration"
+	  "ef": "EntityFramework.Commands",
+	  "gen": "Microsoft.Framework.CodeGeneration"
   },
   "frameworks": {
     "dnx451": {},

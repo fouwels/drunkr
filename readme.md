@@ -1,7 +1,9 @@
-#Drunkr	
+#Drunkr
 
-Queriable PCL for a normalized database of drinks and vendors, and bottles, and etc. - with a sample restFul api on top.
+.net asp.net 6 PCL demo api, + a blatant rip off of cocktail flow client.
 
-Going to be used for something one day..
+asp.net vnext + EF over sqlite and all the usual.
 
-Not finished, at all. Core is ish, api is not.
+project.json build system, no msbuild to be seen here ey.
+
+__Build agains BETA6__ updating to RC2 but haha breaking changes.
